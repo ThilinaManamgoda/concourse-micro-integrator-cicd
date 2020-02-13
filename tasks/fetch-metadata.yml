@@ -1,0 +1,23 @@
+---
+  platform: linux
+
+  image_resource:
+    type: docker-image
+    source: {repository: greenwall/git}
+
+  params:
+    TERM: xterm-256color
+
+  inputs:
+    - name: cicd-code-base
+
+  outputs:
+    - name: metadata
+
+  run:
+    path: /bin/sh
+    args:
+    - -exc
+    - |
+      GIT_SHORT_HASH=`cd cicd-code-base && git log --pretty=format:'%h' -n 1`
+      echo $GIT_SHORT_HASH > metadata/short-commit-hash
